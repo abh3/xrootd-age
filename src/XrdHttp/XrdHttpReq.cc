@@ -2159,6 +2159,13 @@ int XrdHttpReq::PostProcessHTTPReq(bool final_) {
                   &fileflags,
                   &filemodtime);
 
+          if (fileflags & kXR_cachersp)
+             {char buf[256];
+              long object_age = time(NULL) - filemodtime;
+              sprintf(buf, sizeof(buf) "Age: %ld", object_age);
+              prot->SendSimpleResp(200, NULL, buf, NULL, NULL, NULL);
+             } // ???
+
           if (m_req_digest.size()) {
             return 0;
           } else {
